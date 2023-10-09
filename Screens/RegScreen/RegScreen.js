@@ -29,8 +29,32 @@ import {
 } from "./RegScreenStyle";
 
 import { AntDesign } from "@expo/vector-icons";
+import { useState } from "react";
 
 export const RegScreen = () => {
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onReg = () => {
+    if (!login.trim() || !email.trim() || !password.trim()) {
+      return console.warn("Fields are empty!");
+    }
+
+    const formValues = {
+      login,
+      email,
+      password,
+    };
+
+    console.log("formValues = ", formValues);
+
+    setLogin("");
+    setEmail("");
+    setPassword("");
+    Keyboard.dismiss();
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={container}>
@@ -40,7 +64,7 @@ export const RegScreen = () => {
           style={backgroundImage}
         />
         <KeyboardAvoidingView
-          behavior={Platform.OC === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{
             minHeight: 248,
             flex: 1,
@@ -62,6 +86,8 @@ export const RegScreen = () => {
                 <TextInput
                   placeholder="Login"
                   style={{ ...input, marginBottom: 16 }}
+                  value={login}
+                  onChangeText={setLogin}
                 />
               </View>
 
@@ -71,6 +97,8 @@ export const RegScreen = () => {
                   placeholder="Email"
                   placeholderTextColor={"#BDBDBD"}
                   keyboardType="email-address"
+                  value={email}
+                  onChangeText={setEmail}
                 />
               </View>
 
@@ -80,6 +108,8 @@ export const RegScreen = () => {
                   placeholder="Password"
                   placeholderTextColor={"#BDBDBD"}
                   secureTextEntry={true}
+                  value={password}
+                  onChangeText={setPassword}
                 />
 
                 <TouchableOpacity style={passBtn}>
@@ -87,7 +117,7 @@ export const RegScreen = () => {
                 </TouchableOpacity>
               </View>
 
-              <TouchableOpacity style={btn}>
+              <TouchableOpacity style={btn} onPress={onReg}>
                 <Text style={btnText}>Sign up</Text>
               </TouchableOpacity>
             </View>

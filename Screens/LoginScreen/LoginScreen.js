@@ -22,8 +22,29 @@ import {
   btnText,
   regBtnText,
 } from "./LoginScreenStyle";
+import { useState } from "react";
 
 export const LoginScreen = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onLogin = () => {
+    if (!email.trim() || !password.trim()) {
+      return console.warn("Fields are empty!");
+    }
+
+    const formValues = {
+      email,
+      password,
+    };
+
+    console.log("formValues = ", formValues);
+
+    setEmail("");
+    setPassword("");
+    Keyboard.dismiss();
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={container}>
@@ -33,7 +54,7 @@ export const LoginScreen = () => {
           style={backgroundImage}
         />
         <KeyboardAvoidingView
-          behavior={Platform.OC === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{
             minHeight: 248,
             flex: 1,
@@ -50,6 +71,8 @@ export const LoginScreen = () => {
                   placeholder="Email"
                   placeholderTextColor={"#BDBDBD"}
                   keyboardType="email-address"
+                  value={email}
+                  onChangeText={setEmail}
                 />
               </View>
 
@@ -59,6 +82,8 @@ export const LoginScreen = () => {
                   placeholder="Password"
                   placeholderTextColor={"#BDBDBD"}
                   secureTextEntry={true}
+                  value={password}
+                  onChangeText={setPassword}
                 />
 
                 <TouchableOpacity style={passBtn}>
@@ -66,7 +91,7 @@ export const LoginScreen = () => {
                 </TouchableOpacity>
               </View>
 
-              <TouchableOpacity style={btn}>
+              <TouchableOpacity style={btn} onPress={onLogin}>
                 <Text style={btnText}>Log in</Text>
               </TouchableOpacity>
             </View>
